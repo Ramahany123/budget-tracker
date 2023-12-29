@@ -5,7 +5,7 @@
 
 using namespace std;
 
-struct Expense {
+struct Transaction {
     string category;
     double amount;
 };
@@ -65,29 +65,130 @@ public:
             }
         }
     }
+    double calculateTotalIncome() {
+        double total = 0.0;
+        for (int i = 0; i < incomeCount; ++i) {
+            total += incomes[i].amount;
+        }
+        return total;
+    }
+};
+class Expense {
+private:
+    Transaction expenses[30];
+    int expenseCount = 0;
+
+    string ExpenseCategories[6] = {"Food", "Utilities (Gas, Electricity, Water,..)", "Housing (Rent, Mortage Payment)", "Entertainment", "Transportation","Other"};
+
+public:
+
+    void addExpenseCategory() {
+         string choice;
+         Transaction t;
+        do {
+
+                cout << "Choose from the following expense categories:\n";
+                for (int i = 0; i <6; i++) {
+                    cout << i + 1 << "-" << ExpenseCategories[i] << endl;
+                }
+
+                int selectedCategory;
+                cout << "Enter the number corresponding to the category: ";
+                cin >> selectedCategory;
+
+                if (selectedCategory >= 1 && selectedCategory <= 5) {
+
+                    t.category = ExpenseCategories[selectedCategory - 1];
+                    cout << "Enter amount of money spent on this category: ";
+                    cin >> t.amount;
+                    }else if (selectedCategory == 6) {
+                        cout << "Enter expense category: ";
+                        cin >> t.category;
+                        cout << "Enter amount of money spent on this category: ";
+                        cin >> t.amount;
+                    }else {
+                    cout << "Invalid category selection.\n";
+                    break;
+                }
+                    if (expenseCount < 30) {
+                        expenses[expenseCount++] = t;
+                        cout << "Expense category added successfully.\n";
+                    } else {
+                        cout << "Expense entries limit reached.\n";
+                        break;
+                    }
+
+
+            cout << "Do you want to add another expense category? (y/n): ";
+            cin >> choice;
+        }
+        while(choice == "y" || choice == "Y");
+
+    }
+
+    void sumExpenses() {
+        double totalExpense = 0;
+        for (int i = 0; i < expenseCount; ++i) {
+            totalExpense += expenses[i].amount;
+        }
+        cout << "Total Expenses: " << totalExpense << endl;
+    }
+
+    void DisplayExpenses(){
+    for(int i = 0; i<expenseCount;i++){
+        cout << expenses[i].category << " : " << expenses[i].amount << endl;
+    }
+
+    }
+
+    void deleteExpenseCategory() {
+        string categoryToDelete;
+        cout << "Enter expense category to delete: ";
+        cin >> categoryToDelete;
+
+        for (int i = 0; i < expenseCount; i++) {
+            if (expenses[i].category == categoryToDelete) {
+                for (int j = i; j < expenseCount - 1; ++j) {
+                    expenses[j] = expenses[j + 1];
+                }
+                --expenseCount;
+                cout << "Expense category deleted successfully.\n";
+                return;
+            }
+        }
+        cout << "Expense category not found.\n";
+    }
 };
 
 
 int main() {
-    CIncome ObjIncome;
+    CIncome objIncome;
+    Expense objExpense;
     int choiceSelect;
     while (true){
-    cout << "Enter your choice\n";
-    cout << "1-Income\n2-Expense\n3-Report\n4-Exit\n";
-    cin >> choiceSelect;
+        cout << "1-Income\n2-Expense\n3-Report\n4-Exit\n";
+        cout << "-------------------<>---------------------" << endl;
+        cout << "Enter your choice:\n";
+        cin >> choiceSelect;
+        cout << "-------------------<>---------------------" << endl;
     if (choiceSelect == 1){
         while (true){
             int choiceIncome;
             cout << "1-Add income\n2-Show incomes\n3-Delete income\n4-Return to main menu\n";
+            cout << "-------------------<>---------------------" << endl;
             cin >> choiceIncome;
+            cout << "-------------------<>---------------------" << endl;
             if (choiceIncome == 1){
-                ObjIncome.addIncome();
+                objIncome.addIncome();
+                cout << "-------------------<>---------------------" << endl;
             }
             else if (choiceIncome == 2){
-                ObjIncome.showIncomes();
+                objIncome.showIncomes();
+                cout << "-------------------<>---------------------" << endl;
             }
             else if (choiceIncome == 3){
-                ObjIncome.deleteIncome();
+                objIncome.deleteIncome();
+                cout << "-------------------<>---------------------" << endl;
             }
             else if (choiceIncome == 4){
                 break;
@@ -96,7 +197,22 @@ int main() {
         }
     }
     else if (choiceSelect == 2){
-
+        int choiceExpense;
+            cout << "1-Add Expense Category\n2-Delete Expense Category\n";
+            cout << "-------------------<>---------------------" << endl;
+            cin >> choiceExpense;
+            cout << "-------------------<>---------------------" << endl;
+            if (choiceExpense == 1) {
+                objExpense.addExpenseCategory();
+                cout << "-------------------<>---------------------" << endl;
+                  objExpense.DisplayExpenses();
+                cout << "-------------------<>---------------------" << endl;
+                objExpense.sumExpenses();
+                cout << "-------------------<>---------------------" << endl;
+            } else if (choiceExpense == 2) {
+                objExpense.deleteExpenseCategory();
+                cout << "-------------------<>---------------------" << endl;
+            }
     }
     else if (choiceSelect == 3){
         
