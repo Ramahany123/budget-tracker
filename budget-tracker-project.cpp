@@ -15,24 +15,12 @@ struct Income {
     double amount;
 };
 
-class BudgetTracker {
+class CIncome {
 private:
-    Expense expenses[20]; // Assuming a maximum of 20 expenses
     Income incomes[20];   // Assuming a maximum of 20 incomes
-    int expenseCount = 0; // To keep track of the number of expenses
     int incomeCount = 0;  // To keep track of the number of incomes
 
 public:
-    void addExpense(const string& category, double amount) {
-        if (expenseCount < 20) {
-            expenses[expenseCount].category = category;
-            expenses[expenseCount].amount = amount;
-            expenseCount++;
-        } else {
-            cout << "Maximum number of expenses reached!" << endl;
-        }
-    }
-
     void addIncome() {           
         if (incomeCount < 20) {
             cout << "Enter the income source: ";
@@ -61,39 +49,27 @@ public:
                 cout << "Income source: " << incomes[i].source << "\tIncome amount: " << incomes[i].amount << endl;
             }
         }
-    void deleteIncome(Income deleincome){
+    void deleteIncome(){
+        cout << "Enter the name of the income you want to delete: ";
+        Income incomeToDelete;
+        cin.ignore();
+        getline(cin, incomeToDelete.source);
         for(int i = 0; i < incomeCount; i++){
-            if (deleincome.source == incomes[i].source){
+            if (incomeToDelete.source == incomes[i].source){
                 for (int j = i; j < incomeCount - 1; j++) {
                     incomes[j] = incomes[j + 1];
                 }
                 incomeCount--;
-                cout << "Income with source '" << deleincome.source << "' deleted successfully." << endl;
+                cout << "Income with source '" << incomeToDelete.source << "' deleted successfully." << endl;
                     return;
             }
         }
-    }
-
-    double calculateTotalExpenses() {
-        double total = 0.0;
-        for (int i = 0; i < expenseCount; ++i) {
-            total += expenses[i].amount;
-        }
-        return total;
-    }
-
-    double calculateTotalIncome() {
-        double total = 0.0;
-        for (int i = 0; i < incomeCount; ++i) {
-            total += incomes[i].amount;
-        }
-        return total;
     }
 };
 
 
 int main() {
-    BudgetTracker obj;
+    CIncome ObjIncome;
     int choiceSelect;
     while (true){
     cout << "Enter your choice\n";
@@ -105,17 +81,13 @@ int main() {
             cout << "1-Add income\n2-Show incomes\n3-Delete income\n4-Return to main menu\n";
             cin >> choiceIncome;
             if (choiceIncome == 1){
-                obj.addIncome();
+                ObjIncome.addIncome();
             }
             else if (choiceIncome == 2){
-                obj.showIncomes();
+                ObjIncome.showIncomes();
             }
             else if (choiceIncome == 3){
-                cout << "Enter the name of the income you want to delete: ";
-                Income incomeToDelete;
-                cin.ignore();
-                getline(cin, incomeToDelete.source);
-                obj.deleteIncome(incomeToDelete);
+                ObjIncome.deleteIncome();
             }
             else if (choiceIncome == 4){
                 break;
