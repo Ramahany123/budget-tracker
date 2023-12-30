@@ -91,6 +91,7 @@ public:
         string choice;
         do {
             int selectedCategory;
+            if(expenseCount < 30){
             cout << "Enter the number corresponding to the recommended category: ";
             cin >> selectedCategory;
 
@@ -123,16 +124,20 @@ public:
 
             cout << "Expense category added successfully.\n";
             expenseCount++;
+            }else{
+            cout << "Expense entries limit reached.\n";
+            break;
+            }
 
-            cout << "Do you want to add another expense category? (y/n): ";
+cout << "Do you want to add another expense category? (y/n): ";
             cin.ignore();
             getline(cin, choice);
 
-} while (choice == "y" || choice == "Y");
+        } while (choice == "y" || choice == "Y");
     }
 
     void calculateTotalExpenses() {
-        double totalExpense = 0;
+        double totalExpense = 0.0;
         for (int i = 0; i < expenseCount; ++i) {
             totalExpense += expenses[i].amount;
         }
@@ -147,7 +152,7 @@ public:
     }
 
     void ShowExpenses() {
-        if (expenseCount < 2) {
+        if (expenseCount < 30) {
             cout << "Here Are Recommended Categories\n";
             for (int i = 0; i < 6; i++) {
                 cout << i + 1 << "-" << ExpenseCategories[i] << endl;
