@@ -3,7 +3,7 @@
 #include <cctype>
 #include <limits>
 using namespace std;
-
+//comment
 struct Expense {
     string category;
     double amount;
