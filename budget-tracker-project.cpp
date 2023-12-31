@@ -18,7 +18,7 @@ class CIncome {
 private:
     Income incomes[20];   // Assuming a maximum of 20 incomes
     int incomeCount = 0;  // To keep track of the number of incomes
-    string incomeSources[4] = {"Primary job","Part-time job","Freelance", "Other"}; // to add recommended sources for income 
+    string incomeSources[4] = {"Primary job","Part-time job","Freelance", "Other"}; // to add recommended sources for income
 
 public:
     void addIncome() {
@@ -29,7 +29,7 @@ public:
         }
         do {
             int selectedCategory;
-            if(incomeCount < 30){    
+            if(incomeCount < 30){
             cout << "Enter the number corresponding to the recommended source: ";
             cin >> selectedCategory;
 
@@ -109,14 +109,11 @@ public:
 
 class ClassExpense {
 private:
-    Expense expenses[30];
-    int expenseCount = 0;
-
-    string ExpenseCategories[6] = {"Food", "Utilities", "Rent", "Entertainment", "Transportation", "Other"};
-
+string ExpenseCategories[6] = {"Food", "Utilities", "Rent", "Entertainment", "Transportation", "Other"};
 public:
-
-    void addExpenseCategory() {
+int expenseCount = 0;
+Expense expenses[30];
+void addExpenseCategory() {
         string choice;
         cout << "Here Are Recommended Categories\n";
             for (int i = 0; i < 6; i++) {
@@ -169,12 +166,12 @@ cout << "Expense category added successfully.\n";
         } while (choice == "y" || choice == "Y");
     }
 
-    void calculateTotalExpenses() {
+    double calculateTotalExpenses() {
         double totalExpense = 0.0;
         for (int i = 0; i < expenseCount; ++i) {
             totalExpense += expenses[i].amount;
         }
-        cout << "Total Expenses: " << totalExpense << endl;
+        return totalExpense;
     }
 
     void DisplayExpensesUsed() {
@@ -202,10 +199,43 @@ cout << "Expense category added successfully.\n";
         }
     }
 };
+class Report : public CIncome, public ClassExpense {
+public:
+    void ShowTotalExpence(ClassExpense &ex) {
+        double totalExpenses = ex.calculateTotalExpenses();
+        cout << "Total Expenses: " << totalExpenses << endl;
+    }
+
+    void ShowMostExpenceCat(ClassExpense &ex) {
+        Expense mostExpensive = ex.expenses[0];
+        for (int i = 1; i < ex.expenseCount; i++) {
+            if (ex.expenses[i].amount > mostExpensive.amount) {
+                mostExpensive = ex.expenses[i];
+            }
+        }
+        cout << "You have spent the most in the category of " << mostExpensive.category << " which amounts to $" << mostExpensive.amount << endl;
+    }
+
+    void ConsumptionDetails(ClassExpense &ex, CIncome &inco) {
+        double totalExpenses = ex.calculateTotalExpenses();
+        double totalIncome = inco.calculateTotalIncome();
+        double remainingAmount = totalIncome - totalExpenses;
+
+        if (remainingAmount <= 0) {
+            cout << "Warning: Your expenses have done a magic trick and made your money disappear!\n Expect a minus sign in your balance unless you work some financial wizardry!\nYou spent "<< totalExpenses - totalIncome <<"$ more than your income" << endl;
+        } else {
+            cout << "Your total income is $" << totalIncome << ". You have spent $" << totalExpenses << " on expenses." << endl;
+            cout << "The remaining amount is $" << remainingAmount << ", which is about " << ((totalExpenses / totalIncome) * 100) << "% of your income." << endl;
+        }
+    }
+};
+
+
 
 int main() {
     ClassExpense objExpense;
     CIncome objIncome;
+    Report objReport;
     int choiceSelect;
     string name;
     cout << "Welcome To Our Budget Tracker Program\n";
@@ -239,9 +269,8 @@ int main() {
                 } else if (choiceIncome == 4) {
                     break;
                 }
-            }
-
-} else if (choiceSelect == 2) {
+            }}
+ else if (choiceSelect == 2) {
            while (true) {
                 int choiceExpense;
                 cout << "1-Add Expense Category\n2-Show Expenses\n3-Delete Expense Category\n4-Return to main menu\n";
@@ -262,8 +291,27 @@ int main() {
                 }
             }
         } else if (choiceSelect == 3) {
+            while (true){
+              int reportChoice;
+            cout << "1-Show total expense\n2-Show most expensive category\n3-Show consumption details\n4-Return to main menu\n";
+            cout << "--------------------<>--------------------" << endl;
+            cin >> reportChoice;
+            cout << "--------------------<>--------------------" << endl;
 
-        } else if (choiceSelect == 4) {
+             if (reportChoice == 1) {
+                    objReport.ShowTotalExpence(objExpense);
+                    cout << "--------------------<>--------------------" << endl;
+                } else if (reportChoice== 2) {
+              objReport.ShowMostExpenceCat(objExpense);
+                    cout << "--------------------<>--------------------" << endl;
+                } else if (reportChoice == 3) {
+                    objReport.ConsumptionDetails(objExpense,objIncome);
+                    cout << "--------------------<>--------------------" << endl;
+                } else if (reportChoice == 4) {
+                    break;
+                }
+           }
+        }else if (choiceSelect == 4) {
             cout << "This program is made by:\n1.Shahd Ramadan\n2.Omnia Abuelhassan\n3.Rama Hany\n4.Alaa Abdallah\n";
             cout << "--------------------<>--------------------" << endl;
             cout << "Special thanks to:\n1-Dr.Sherif.\n2-Dr.Yasmeen.\nWe really appreciate their guidance and support with us\nA great thanks to them \n";
