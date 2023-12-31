@@ -29,11 +29,12 @@ private:
 public:
     void addIncome() {
         string choice;
-        cout << "Here Are Recommended Categories\n";
-        for (int i = 0; i < 4; i++) {
-            cout << i + 1 << "-" << incomeSources[i] << endl;
-        }
+        
         do {
+            cout << "Here Are Recommended Categories\n";
+            for (int i = 0; i < 4; i++) {
+                cout << i + 1 << "-" << incomeSources[i] << endl;
+            }
             int selectedCategory;
             if(incomeCount < 30){
             cout << "Enter the number corresponding to the recommended source: ";
@@ -55,7 +56,7 @@ public:
             }
 
             for (int i = 0; i < incomeCount; i++) {
-                if (incomes[incomeCount].source == incomes[i].source) {     //to check for dublicated source 
+                if (toLower(incomes[incomeCount].source) == toLower(incomes[i].source)) {     //to check for dublicated source 
                     incomes[i].amount += incomes[incomeCount].amount;
                     incomeCount--;
 
@@ -93,7 +94,7 @@ public:
         getline(cin, incomeToDelete.source);
 
         for (int i = 0; i < incomeCount; i++) {
-            if (incomeToDelete.source == incomes[i].source) {
+            if (toLower(incomeToDelete.source) == toLower(incomes[i].source)) {
                 for (int j = i; j < incomeCount - 1; j++) {
                     incomes[j] = incomes[j + 1];
                 }
@@ -121,11 +122,11 @@ Expense expenses[30];
 public:
 void addExpenseCategory() {
         string choice;
-        cout << "Here Are Recommended Categories\n";
+        do {
+            cout << "Here Are Recommended Categories\n";
             for (int i = 0; i < 6; i++) {
                 cout << i + 1 << "-" << ExpenseCategories[i] << endl;
             }
-        do {
             int selectedCategory;
             if(expenseCount < 30){
             cout << "Enter the number corresponding to the recommended category: ";
@@ -147,7 +148,7 @@ void addExpenseCategory() {
             }
 
             for (int i = 0; i < expenseCount; i++) {
-                if (expenses[expenseCount].category == expenses[i].category) {
+                if (toLower(expenses[expenseCount].category) == toLower(expenses[i].category)) {
                     expenses[i].amount += expenses[expenseCount].amount;
                     expenseCount--;
 
@@ -194,7 +195,7 @@ cout << "Expense category added successfully.\n";
         getline(cin, expenseToDelete.category);
 
         for (int i = 0; i < expenseCount; i++) {
-            if (expenseToDelete.category == expenses[i].category) {
+            if (toLower(expenseToDelete.category) == toLower(expenses[i].category)) {
                 for (int j = i; j < expenseCount - 1; j++) {
                     expenses[j] = expenses[j + 1];
                 }
