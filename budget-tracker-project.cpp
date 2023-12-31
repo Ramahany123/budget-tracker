@@ -3,7 +3,13 @@
 #include <cctype>
 #include <limits>
 using namespace std;
-
+string toLower(const string& input) {       //use it to make program case insensitive
+    string result = input;
+    for (char& c : result) {
+        c = tolower(c);
+    }
+    return result;
+}
 struct Expense {
     string category;
     double amount;
@@ -33,23 +39,23 @@ public:
             cout << "Enter the number corresponding to the recommended source: ";
             cin >> selectedCategory;
 
-            if (selectedCategory >= 1 && selectedCategory <= 3) {
+            if (selectedCategory >= 1 && selectedCategory <= 3) {                   //add money to the recommended source 
                 incomes[incomeCount].source = incomeSources[selectedCategory - 1];
-                cout << "Enter amount of money gained from this category: ";
+                cout << "Enter amount of money gained from this source: ";
                 cin >> incomes[incomeCount].amount;
-            } else if (selectedCategory == 4) {
+            } else if (selectedCategory == 4) {         //add a source from the user and then the amount of money 
                 cout << "Enter income source: ";
                 cin.ignore();
                 getline(cin, incomes[incomeCount].source);
-                cout << "Enter amount of money gained from this category: ";
+                cout << "Enter amount of money gained from this source: ";
                 cin >> incomes[incomeCount].amount;
             } else {
-                cout << "Invalid source selection.\n";
+                cout << "Invalid source selection.\n";          //if user choose something isn't in list it restart the loop and ask the user again
                 break;
             }
 
             for (int i = 0; i < incomeCount; i++) {
-                if (incomes[incomeCount].source == incomes[i].source) {     //to check for dublicated source
+                if (incomes[incomeCount].source == incomes[i].source) {     //to check for dublicated source 
                     incomes[i].amount += incomes[incomeCount].amount;
                     incomeCount--;
 
@@ -71,7 +77,7 @@ public:
             cin.ignore();
             getline(cin, choice);
 
-        } while (choice == "y" || choice == "Y");
+        } while (choice == "y" || choice == "Y");       //gives the user the option to add another income if he want
     }
 
     void showIncomes() {
