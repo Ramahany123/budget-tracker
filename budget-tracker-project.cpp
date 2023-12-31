@@ -110,9 +110,9 @@ public:
 class ClassExpense {
 private:
 string ExpenseCategories[6] = {"Food", "Utilities", "Rent", "Entertainment", "Transportation", "Other"};
-public:
 int expenseCount = 0;
 Expense expenses[30];
+public:
 void addExpenseCategory() {
         string choice;
         cout << "Here Are Recommended Categories\n";
@@ -198,6 +198,7 @@ cout << "Expense category added successfully.\n";
             }
         }
     }
+    friend class Report;
 };
 class Report : public CIncome, public ClassExpense {
 public:
@@ -241,7 +242,7 @@ int main() {
     cout << "Welcome To Our Budget Tracker Program\n";
     cout << "Please, Provide us with your name\n";
     cout << "Your name: ";
-    cin >> name;
+    getline(cin, name);
     cout << "Hello, " << name << ":)" << "\nWe are so glad that you are interested in our program\nLet's Start...\n";
     cout << "--------------------<>--------------------" << endl;
     while (true) {
@@ -318,6 +319,10 @@ int main() {
             cout << "--------------------<>--------------------" << endl;
             cout << "Goodbye\nWaiting for us for future amazing programs ISA:)\n";
             break;
+        }
+        else{ 
+            cout << "INVALID INPUT!!! please try agian\n";
+            continue;
         }
     }
 
