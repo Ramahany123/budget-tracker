@@ -10,6 +10,11 @@ string toLower(const string& input) {       //use it to make program case insens
     }
     return result;
 }
+void handleInvalidInput() {
+    cin.clear(); // Clear the error state.
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore any characters in the input buffer.
+    cout << "INVALID INPUT!!! Please enter a number.\n";
+}
 struct Expense {
     string category;
     double amount;
@@ -39,17 +44,29 @@ public:
             if(incomeCount < 30){
             cout << "Enter the number corresponding to the recommended source: ";
             cin >> selectedCategory;
+            if (cin.fail()) {
+            handleInvalidInput();
+            continue;
+            }
 
             if (selectedCategory >= 1 && selectedCategory <= 3) {                   //add money to the recommended source 
                 incomes[incomeCount].source = incomeSources[selectedCategory - 1];
                 cout << "Enter amount of money gained from this source: ";
                 cin >> incomes[incomeCount].amount;
+                if (cin.fail()) {
+                handleInvalidInput();
+                continue;
+                }
             } else if (selectedCategory == 4) {         //add a source from the user and then the amount of money 
                 cout << "Enter income source: ";
                 cin.ignore();
                 getline(cin, incomes[incomeCount].source);
                 cout << "Enter amount of money gained from this source: ";
                 cin >> incomes[incomeCount].amount;
+                if (cin.fail()) {
+                handleInvalidInput();
+                continue;
+                }
             } else {
                 cout << "Invalid source selection.\n";          //if user choose something isn't in list it restart the loop and ask the user again
                 break;
@@ -131,17 +148,29 @@ void addExpenseCategory() {
             if(expenseCount < 30){
             cout << "Enter the number corresponding to the recommended category: ";
             cin >> selectedCategory;
+            if (cin.fail()) {
+                handleInvalidInput();
+                continue;
+            }
 
             if (selectedCategory >= 1 && selectedCategory <= 5) {
                 expenses[expenseCount].category = ExpenseCategories[selectedCategory - 1];
                 cout << "Enter amount of money spent on this category: ";
                 cin >> expenses[expenseCount].amount;
+                if (cin.fail()) {
+                    handleInvalidInput();
+                    continue;
+                }
             } else if (selectedCategory == 6) {
                 cout << "Enter expense category: ";
                 cin.ignore();
                 getline(cin, expenses[expenseCount].category);
                 cout << "Enter amount of money spent on this category: ";
                 cin >> expenses[expenseCount].amount;
+                if (cin.fail()) {
+                    handleInvalidInput();
+                    continue;
+                }
             } else {
                 cout << "Invalid category selection.\n";
                 break;
@@ -257,6 +286,10 @@ int main() {
         cout << "1-Income\n2-Expense\n3-Report\n4-Exit\n";
         cout << "--------------------<>--------------------" << endl;
         cin >> choiceSelect;
+        if (cin.fail()) {
+            handleInvalidInput();
+            continue;
+        }
         cout << "--------------------<>--------------------" << endl;
         if (choiceSelect == 1) {
             while (true) {
@@ -264,6 +297,10 @@ int main() {
                 cout << "1-Add income\n2-Show incomes\n3-Delete income\n4-Return to main menu\n";
                 cout << "--------------------<>--------------------" << endl;
                 cin >> choiceIncome;
+                if (cin.fail()) {
+                    handleInvalidInput();
+                    continue;
+                }
                 cout << "--------------------<>--------------------" << endl;
                 if (choiceIncome == 1) {
                     objIncome.addIncome();
@@ -284,6 +321,10 @@ int main() {
                 cout << "1-Add Expense Category\n2-Show Expenses\n3-Delete Expense Category\n4-Return to main menu\n";
                 cout << "--------------------<>--------------------" << endl;
                 cin >> choiceExpense;
+                if (cin.fail()) {
+                    handleInvalidInput();
+                    continue;
+                }
                 cout << "--------------------<>--------------------" << endl;
                 if (choiceExpense == 1) {
                     objExpense.addExpenseCategory();
@@ -304,6 +345,10 @@ int main() {
             cout << "1-Show total expense\n2-Show most expensive category\n3-Show consumption details\n4-Return to main menu\n";
             cout << "--------------------<>--------------------" << endl;
             cin >> reportChoice;
+            if (cin.fail()) {
+                handleInvalidInput();
+                continue;
+            }
             cout << "--------------------<>--------------------" << endl;
 
              if (reportChoice == 1) {
