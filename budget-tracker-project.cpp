@@ -10,82 +10,71 @@ string toLower(const string& input) {       //use it to make program case insens
     }
     return result;
 }
-void handleInvalidInput() {
-    cin.clear(); // Clear the error state.
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore any characters in the input buffer.
-    cout << "INVALID INPUT!!! Please enter a number.\n";
-}
-struct Expense {
+struct ExpenseAndIncome {
     string category;
     double amount;
 };
 
-struct Income {
-    string source;
-    double amount;
+
+class parent {
+protected:
+    ExpenseAndIncome EI[30]; // Assuming a maximum of 30 incomes and expense
+    int ParentCount = 0;    // To keep track of the number of incomes and expenses
+    public:
+     virtual void AddExpenseAndIncome() = 0;
+     virtual void ShowExpenseAndIncome() = 0;
+     virtual void DeleteExpenseAndIncome() = 0;
+     virtual double TotalExpenseAndIncome() = 0;
+
 };
 
-class CIncome {
+class CIncome:public parent {
 private:
-    Income incomes[20];   // Assuming a maximum of 20 incomes
-    int incomeCount = 0;  // To keep track of the number of incomes
     string incomeSources[4] = {"Primary job","Part-time job","Freelance", "Other"}; // to add recommended sources for income
 
 public:
-    void addIncome() {
+    void AddExpenseAndIncome() override {
         string choice;
-        
+
         do {
             cout << "Here Are Recommended Categories\n";
             for (int i = 0; i < 4; i++) {
                 cout << i + 1 << "-" << incomeSources[i] << endl;
             }
             int selectedCategory;
-            if(incomeCount < 30){
+            if(ParentCount < 30){
             cout << "Enter the number corresponding to the recommended source: ";
             cin >> selectedCategory;
-            if (cin.fail()) {
-            handleInvalidInput();
-            continue;
-            }
 
-            if (selectedCategory >= 1 && selectedCategory <= 3) {                   //add money to the recommended source 
-                incomes[incomeCount].source = incomeSources[selectedCategory - 1];
+            if (selectedCategory >= 1 && selectedCategory <= 3) {                   //add money to the recommended source
+                EI[ParentCount].category = incomeSources[selectedCategory - 1];
                 cout << "Enter amount of money gained from this source: ";
-                cin >> incomes[incomeCount].amount;
-                if (cin.fail()) {
-                handleInvalidInput();
-                continue;
-                }
-            } else if (selectedCategory == 4) {         //add a source from the user and then the amount of money 
+                cin >> EI[ParentCount].amount;
+            } else if (selectedCategory == 4) {         //add a source from the user and then the amount of money
                 cout << "Enter income source: ";
                 cin.ignore();
-                getline(cin, incomes[incomeCount].source);
+                getline(cin, EI[ParentCount].category);
                 cout << "Enter amount of money gained from this source: ";
-                cin >> incomes[incomeCount].amount;
-                if (cin.fail()) {
-                handleInvalidInput();
-                continue;
-                }
+                cin >> EI[ParentCount].amount;
             } else {
                 cout << "Invalid source selection.\n";          //if user choose something isn't in list it restart the loop and ask the user again
                 break;
             }
 
-            for (int i = 0; i < incomeCount; i++) {
-                if (toLower(incomes[incomeCount].source) == toLower(incomes[i].source)) {     //to check for dublicated source 
-                    incomes[i].amount += incomes[incomeCount].amount;
-                    incomeCount--;
+            for (int i = 0; i < ParentCount; i++) {
+                if (toLower(EI[ParentCount].category) == toLower(EI[i].category)) {     //to check for dublicated source
+                    EI[i].amount += EI[ParentCount].amount;
+                    ParentCount--;
 
-                    for (int j = i + 1; j < incomeCount; j++) {     //to delete the dublicated source
-                        incomes[j] = incomes[j + 1];
+                    for (int j = i + 1; j < ParentCount; j++) {     //to delete the dublicated source
+                        EI[j] = EI[j + 1];
                     }
                     break;
                 }
             }
 
             cout << "income source added successfully.\n";
-            incomeCount++;
+            ParentCount++;
             }else{
             cout << "incomes entries limit reached.\n";
             break;
@@ -95,49 +84,47 @@ public:
             cin.ignore();
             getline(cin, choice);
 
-        } while (choice == "y" || choice == "Y");       //gives the user the option to add another income if he want
+} while (choice == "y" || choice == "Y");       //gives the user the option to add another income if he want
     }
 
-    void showIncomes() {
-        for (int i = 0; i < incomeCount; i++) {
-            cout << "Income source: " << incomes[i].source << "\tIncome amount: " << incomes[i].amount << endl;
+    void ShowExpenseAndIncome() {
+        for (int i = 0; i < ParentCount; i++) {
+            cout << "Income source: " << EI[i].category << "\tIncome amount: " << EI[i].amount << endl;
         }
     }
 
-    void deleteIncome() {
+    void DeleteExpenseAndIncome() {
         cout << "Enter the name of the income you want to delete: ";
-        Income incomeToDelete;
+        ExpenseAndIncome incomeToDelete;
         cin.ignore();
-        getline(cin, incomeToDelete.source);
+        getline(cin, incomeToDelete.category);
 
-        for (int i = 0; i < incomeCount; i++) {
-            if (toLower(incomeToDelete.source) == toLower(incomes[i].source)) {
-                for (int j = i; j < incomeCount - 1; j++) {
-                    incomes[j] = incomes[j + 1];
+        for (int i = 0; i < ParentCount; i++) {
+            if (toLower(incomeToDelete.category) == toLower(EI[i].category)) {
+                for (int j = i; j < ParentCount - 1; j++) {
+                   EI[j] = EI[j + 1];
                 }
-                incomeCount--;
-                cout << "Income with source '" << incomeToDelete.source << "' deleted successfully." << endl;
+                ParentCount--;
+                cout << "Income with source '" << incomeToDelete.category << "' deleted successfully." << endl;
                 return;
             }
         }
     }
 
-    double calculateTotalIncome() {
+    double TotalExpenseAndIncome() {
         double total = 0.0;
-        for (int i = 0; i < incomeCount; ++i) {
-            total += incomes[i].amount;
+        for (int i = 0; i < ParentCount; ++i) {
+            total += EI[i].amount;
         }
         return total;
     }
 };
 
-class ClassExpense {
+class ClassExpense: public parent {
 private:
 string ExpenseCategories[6] = {"Food", "Utilities", "Rent", "Entertainment", "Transportation", "Other"};
-int expenseCount = 0;
-Expense expenses[30];
 public:
-void addExpenseCategory() {
+void AddExpenseAndIncome() {
         string choice;
         do {
             cout << "Here Are Recommended Categories\n";
@@ -145,51 +132,39 @@ void addExpenseCategory() {
                 cout << i + 1 << "-" << ExpenseCategories[i] << endl;
             }
             int selectedCategory;
-            if(expenseCount < 30){
+            if(ParentCount < 30){
             cout << "Enter the number corresponding to the recommended category: ";
             cin >> selectedCategory;
-            if (cin.fail()) {
-                handleInvalidInput();
-                continue;
-            }
 
             if (selectedCategory >= 1 && selectedCategory <= 5) {
-                expenses[expenseCount].category = ExpenseCategories[selectedCategory - 1];
+                EI[ParentCount].category = ExpenseCategories[selectedCategory - 1];
                 cout << "Enter amount of money spent on this category: ";
-                cin >> expenses[expenseCount].amount;
-                if (cin.fail()) {
-                    handleInvalidInput();
-                    continue;
-                }
+                cin >> EI[ParentCount].amount;
             } else if (selectedCategory == 6) {
                 cout << "Enter expense category: ";
                 cin.ignore();
-                getline(cin, expenses[expenseCount].category);
+                getline(cin, EI[ParentCount].category);
                 cout << "Enter amount of money spent on this category: ";
-                cin >> expenses[expenseCount].amount;
-                if (cin.fail()) {
-                    handleInvalidInput();
-                    continue;
-                }
+                cin >> EI[ParentCount].amount;
             } else {
                 cout << "Invalid category selection.\n";
                 break;
             }
 
-            for (int i = 0; i < expenseCount; i++) {
-                if (toLower(expenses[expenseCount].category) == toLower(expenses[i].category)) {
-                    expenses[i].amount += expenses[expenseCount].amount;
-                    expenseCount--;
+            for (int i = 0; i < ParentCount; i++) {
+                if (toLower(EI[ParentCount].category) == toLower(EI[i].category)) {
+                    EI[i].amount += EI[ParentCount].amount;
+                   ParentCount--;
 
-                    for (int j = i + 1; j < expenseCount; j++) {
-                        expenses[j] = expenses[j + 1];
+                    for (int j = i + 1; j < ParentCount; j++) {
+                        EI[j] = EI[j + 1];
                     }
                     break;
                 }
             }
 
 cout << "Expense category added successfully.\n";
-            expenseCount++;
+            ParentCount++;
             }else{
             cout << "Expense entries limit reached.\n";
             break;
@@ -202,33 +177,33 @@ cout << "Expense category added successfully.\n";
         } while (choice == "y" || choice == "Y");
     }
 
-    double calculateTotalExpenses() {
+    double TotalExpenseAndIncome() {
         double totalExpense = 0.0;
-        for (int i = 0; i < expenseCount; ++i) {
-            totalExpense += expenses[i].amount;
+        for (int i = 0; i < ParentCount; ++i) {
+            totalExpense += EI[i].amount;
         }
         return totalExpense;
     }
 
-    void DisplayExpensesUsed() {
+    void ShowExpenseAndIncome() {
         cout << "Your Expenses: \n";
-        for (int i = 0; i < expenseCount; i++) {
-            cout << expenses[i].category << " : " << expenses[i].amount << endl;
+        for (int i = 0; i < ParentCount; i++) {
+            cout << EI[i].category << " : " <<EI[i].amount << endl;
         }
     }
 
-    void deleteExpenseCategory() {
+    void DeleteExpenseAndIncome() {
         cout << "Enter the name of expense you want to delete: ";
-        Expense expenseToDelete;
+        ExpenseAndIncome expenseToDelete;
         cin.ignore();
         getline(cin, expenseToDelete.category);
 
-        for (int i = 0; i < expenseCount; i++) {
-            if (toLower(expenseToDelete.category) == toLower(expenses[i].category)) {
-                for (int j = i; j < expenseCount - 1; j++) {
-                    expenses[j] = expenses[j + 1];
+for (int i = 0; i < ParentCount; i++) {
+            if (toLower(expenseToDelete.category) == toLower(EI[i].category)) {
+                for (int j = i; j < ParentCount - 1; j++) {
+                    EI[j] = EI[j + 1];
                 }
-                expenseCount--;
+                ParentCount--;
                 cout << "Expense with category '" << expenseToDelete.category << "' deleted successfully." << endl;
                 return;
             }
@@ -239,27 +214,27 @@ cout << "Expense category added successfully.\n";
 class Report : public CIncome, public ClassExpense {
 public:
     void ShowTotalExpence(ClassExpense &ex) {
-        double totalExpenses = ex.calculateTotalExpenses();
+        double totalExpenses = ex.TotalExpenseAndIncome();
         cout << "Total Expenses: " << totalExpenses << endl;
     }
 
     void ShowMostExpenceCat(ClassExpense &ex) {
-        Expense mostExpensive = ex.expenses[0];
-        for (int i = 1; i < ex.expenseCount; i++) {
-            if (ex.expenses[i].amount > mostExpensive.amount) {
-                mostExpensive = ex.expenses[i];
+        ExpenseAndIncome mostExpensive = ex.EI[0];
+        for (int i = 1; i < ex.ParentCount; i++) {
+            if (ex.EI[i].amount > mostExpensive.amount) {
+                mostExpensive = ex.EI[i];
             }
         }
         cout << "You have spent the most in the category of " << mostExpensive.category << " which amounts to $" << mostExpensive.amount << endl;
     }
 
     void ConsumptionDetails(ClassExpense &ex, CIncome &inco) {
-        double totalExpenses = ex.calculateTotalExpenses();
-        double totalIncome = inco.calculateTotalIncome();
+        double totalExpenses = ex.TotalExpenseAndIncome();
+        double totalIncome = inco.TotalExpenseAndIncome();
         double remainingAmount = totalIncome - totalExpenses;
 
         if (remainingAmount <= 0) {
-            cout << "Warning: Your expenses have done a magic trick and made your money disappear!\n Expect a minus sign in your balance unless you work some financial wizardry!\nYou spent "<< totalExpenses - totalIncome <<"$ more than your income" << endl;
+            cout << "Warning: Your expenses have done a magic trick and made your money disappear!\nExpect a minus sign in your balance unless you work some financial wizardry!\nYou spent "<< totalExpenses - totalIncome <<"$ more than your income" << endl;
         } else {
             cout << "Your total income is $" << totalIncome << ". You have spent $" << totalExpenses << " on expenses." << endl;
             cout << "The remaining amount is $" << remainingAmount << ", which is about " << ((totalExpenses / totalIncome) * 100) << "% of your income." << endl;
@@ -268,12 +243,13 @@ public:
 };
 
 
-
 int main() {
     ClassExpense objExpense;
     CIncome objIncome;
     Report objReport;
     int choiceSelect;
+    parent* ptr1 = &objExpense;
+    parent* ptr2 = &objIncome;
     string name;
     cout << "Welcome To Our Budget Tracker Program\n";
     cout << "Please, Provide us with your name\n";
@@ -286,10 +262,6 @@ int main() {
         cout << "1-Income\n2-Expense\n3-Report\n4-Exit\n";
         cout << "--------------------<>--------------------" << endl;
         cin >> choiceSelect;
-        if (cin.fail()) {
-            handleInvalidInput();
-            continue;
-        }
         cout << "--------------------<>--------------------" << endl;
         if (choiceSelect == 1) {
             while (true) {
@@ -297,19 +269,15 @@ int main() {
                 cout << "1-Add income\n2-Show incomes\n3-Delete income\n4-Return to main menu\n";
                 cout << "--------------------<>--------------------" << endl;
                 cin >> choiceIncome;
-                if (cin.fail()) {
-                    handleInvalidInput();
-                    continue;
-                }
                 cout << "--------------------<>--------------------" << endl;
                 if (choiceIncome == 1) {
-                    objIncome.addIncome();
+                    ptr2->AddExpenseAndIncome();
                     cout << "--------------------<>--------------------" << endl;
                 } else if (choiceIncome == 2) {
-                    objIncome.showIncomes();
+                    ptr2->ShowExpenseAndIncome();
                     cout << "--------------------<>--------------------" << endl;
                 } else if (choiceIncome == 3) {
-                    objIncome.deleteIncome();
+                    ptr2->DeleteExpenseAndIncome();
                     cout << "--------------------<>--------------------" << endl;
                 } else if (choiceIncome == 4) {
                     break;
@@ -319,21 +287,18 @@ int main() {
            while (true) {
                 int choiceExpense;
                 cout << "1-Add Expense Category\n2-Show Expenses\n3-Delete Expense Category\n4-Return to main menu\n";
-                cout << "--------------------<>--------------------" << endl;
+
+cout << "--------------------<>--------------------" << endl;
                 cin >> choiceExpense;
-                if (cin.fail()) {
-                    handleInvalidInput();
-                    continue;
-                }
                 cout << "--------------------<>--------------------" << endl;
                 if (choiceExpense == 1) {
-                    objExpense.addExpenseCategory();
+                    ptr1->AddExpenseAndIncome();
                     cout << "--------------------<>--------------------" << endl;
                 } else if (choiceExpense == 2) {
-                    objExpense.DisplayExpensesUsed();
+                    ptr1->ShowExpenseAndIncome();
                     cout << "--------------------<>--------------------" << endl;
                 } else if (choiceExpense == 3) {
-                    objExpense.deleteExpenseCategory();
+                    ptr1->DeleteExpenseAndIncome();
                     cout << "--------------------<>--------------------" << endl;
                 } else if (choiceExpense == 4) {
                     break;
@@ -345,10 +310,6 @@ int main() {
             cout << "1-Show total expense\n2-Show most expensive category\n3-Show consumption details\n4-Return to main menu\n";
             cout << "--------------------<>--------------------" << endl;
             cin >> reportChoice;
-            if (cin.fail()) {
-                handleInvalidInput();
-                continue;
-            }
             cout << "--------------------<>--------------------" << endl;
 
              if (reportChoice == 1) {
@@ -372,7 +333,7 @@ int main() {
             cout << "Goodbye\nWaiting for us for future amazing programs ISA:)\n";
             break;
         }
-        else{ 
+        else{
             cout << "INVALID INPUT!!! please try agian\n";
             continue;
         }
