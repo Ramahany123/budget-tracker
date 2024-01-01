@@ -214,11 +214,13 @@ cout << "Expense category added successfully.\n";
     }
     friend class Report;
 };
+
 class Report : public CIncome, public ClassExpense {
 public:
-    void ShowTotalExpence(ClassExpense &ex) {
+    void ShowTotalExpence(ClassExpense &ex,CIncome &in) {
+        double totalIncome = in.calculateTotalIncome();
         double totalExpenses = ex.calculateTotalExpenses();
-        cout << "Total Expenses: " << totalExpenses << endl;
+        cout << "Total Expenses: " << totalExpenses <<  " & Total incomes: " <<endl;
     }
     void ShowMostExpenceCat(ClassExpense &ex) {
         Expense mostExpensive = ex.expenses[0];
@@ -237,7 +239,7 @@ public:
             cout << "Warning: Your expenses have done a magic trick and made your money disappear!\n Expect a minus sign in your balance unless you work some financial wizardry!\nYou spent "<< totalExpenses - totalIncome <<"$ more than your income" << endl;
         } else {
             cout << "Your total income is $" << totalIncome << ". You have spent $" << totalExpenses << " on expenses." << endl;
-            cout << "The remaining amount is $" << remainingAmount << ", which is about " << ((totalExpenses / totalIncome) * 100) << "% of your income." << endl;
+            cout << "The remaining amount is $" << remainingAmount << ", You have spent about " << ((totalExpenses / totalIncome) * 100) << "% of your income." << endl;
         }
     }
 };
@@ -314,7 +316,7 @@ int main() {
         } else if (choiceSelect == 3) {
             while (true){
               int reportChoice;
-            cout << "1-Show total expense\n2-Show most expensive category\n3-Show consumption details\n4-Return to main menu\n";
+            cout << "1-Show total expenses & total incomes \n2-Show most expensive category\n3-Show consumption details\n4-Return to main menu\n";
             cout << "--------------------<>--------------------" << endl;
             cin >> reportChoice;
             if (cin.fail()) {
@@ -324,7 +326,7 @@ int main() {
             cout << "--------------------<>--------------------" << endl;
 
              if (reportChoice == 1) {
-                    objReport.ShowTotalExpence(objExpense);
+                    objReport.ShowTotalExpence(objExpense,objIncome);
                     cout << "--------------------<>--------------------" << endl;
                 } else if (reportChoice== 2) {
               objReport.ShowMostExpenceCat(objExpense);
