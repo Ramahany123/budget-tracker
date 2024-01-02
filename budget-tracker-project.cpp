@@ -33,7 +33,7 @@ public:
         string choice;
         
         do {
-            cout << "Here Are Recommended Categories\n";
+            cout << "Here Are Recommended Income Sources\n";
             for (int i = 0; i < 4; i++) {
                 cout << i + 1 << "-" << incomeSources[i] << endl;
             }
@@ -95,6 +95,8 @@ public:
         }
     }
     void deleteIncome() {
+        cout << "These are your income sources:\n";
+        showIncomes();
         cout << "Enter the name of the income you want to delete: ";
         Income incomeToDelete;
         cin.ignore();
@@ -197,6 +199,8 @@ cout << "Expense category added successfully.\n";
         }
     }
     void deleteExpenseCategory() {
+        cout << "These are your expense categories:\n";
+        DisplayExpensesUsed();
         cout << "Enter the name of expense you want to delete: ";
         Expense expenseToDelete;
         cin.ignore();
@@ -215,7 +219,7 @@ cout << "Expense category added successfully.\n";
     friend class Report;
 };
 
-class Report : public CIncome, public ClassExpense {
+class Report {
 public:
     void ShowTotalExpence(ClassExpense ex,CIncome in) {
         double totalIncome = in.calculateTotalIncome();
