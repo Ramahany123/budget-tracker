@@ -1,6 +1,4 @@
 #include <iostream>
-#include <string>
-#include <cctype>
 #include <limits>
 using namespace std;
 string toLower(const string& input) {       //use it to make program case insensitive
@@ -239,11 +237,12 @@ public:
         double totalExpenses = ex.calculateTotalExpenses();
         double totalIncome = inco.calculateTotalIncome();
         double remainingAmount = totalIncome - totalExpenses;
+        int spentPercent = (totalExpenses / totalIncome) * 100;
         if (remainingAmount < 0) {
             cout << "Warning: Your expenses have done a magic trick and made your money disappear!\nExpect a minus sign in your balance unless you work some financial wizardry!\nYou spent "<< totalExpenses - totalIncome <<"$ more than your income" << endl;
         } else {
             cout << "Your total income is $" << totalIncome << ". You have spent $" << totalExpenses << " on expenses." << endl;
-            cout << "The remaining amount is $" << remainingAmount << ", You have spent about " << ((totalExpenses / totalIncome) * 100) << "% of your income." << endl;
+            cout << "The remaining amount is $" << remainingAmount << ", You have spent about " << spentPercent << "% of your income." << endl;
         }
     }
 };
