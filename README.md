@@ -20,12 +20,15 @@ Structures to store expense categories and income sources with their respective 
 
 #### class CIncome
 Manages income-related operations.
+```
 addIncome(): Adds income from recommended sources or user-input sources, avoiding duplicates.
 showIncomes(): Displays added income sources and their amounts.
 deleteIncome(): Deletes a specific income source.
 calculateTotalIncome(): Calculates the total income.
 
+
 #### class ClassExpense
+
 Manages expense-related operations.
 addExpenseCategory(): Adds expense categories from recommended options or user-input categories, preventing duplicates.
 calculateTotalExpenses(): Calculates the total expenses.
@@ -37,6 +40,7 @@ Generates reports based on financial data.
 ShowTotalExpence(ClassExpense ex, CIncome in): Shows total expenses and total incomes.
 ShowMostExpenceCat(ClassExpense ex): Shows the most expensive expense category.
 ConsumptionDetails(ClassExpense ex, CIncome inco): Provides consumption details like remaining amount and spending percentage.
+
 
 #### main()
 Main program execution.
