@@ -1,9 +1,12 @@
 # Program Overview:
+```
 This budget tracker program enables users to manage their income and expenses. 
 It offers functionalities to add, display, and delete income sources and expense categories. 
 Additionally, it generates reports on financial details such as total expenses, income, most expensive category, and consumption details.
+```
 
 ## Libraries Used:
+```
 <iostream>: Input and output operations.
 <limits>: Provides numeric limits for streams.
 using namespace std: Allows using elements of the standard C++ library.
@@ -11,6 +14,7 @@ using namespace std: Allows using elements of the standard C++ library.
 #### toLower(const string& input)
 Converts a given string to lowercase characters.
 Usage: Makes the program case insensitive.
+```
 
 #### handleInvalidInput()
 Handles invalid inputs by clearing the error state and ignoring the input buffer.
