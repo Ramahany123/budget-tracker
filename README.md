@@ -56,4 +56,4 @@ Main program execution.
   - Income management
   - Expense management
   - Reports generation
-- Displaying program credits and exit.
+  - Displaying program credits and exit.
